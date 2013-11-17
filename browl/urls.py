@@ -1,12 +1,14 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
 from apps.posts.views import PostViewSet
+from apps.users.views import UserViewSet
 
 from django.contrib import admin
 admin.autodiscover()
 
 router = routers.DefaultRouter()
 router.register(r'posts', PostViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),
