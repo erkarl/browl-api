@@ -28,6 +28,7 @@ DATABASES = {
 ### Setup Dependencies
 ```console
 make install
+make initdb
 ```
 
 ## Run the server 
