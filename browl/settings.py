@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'apps.posts',
     'apps.users',
-    'apps.tests',
     'rest_framework',
     'corsheaders',
     'south',
@@ -74,6 +73,10 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+import sys
+if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
+    DATABASES['default']['engine'] = 'sqlite3'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
