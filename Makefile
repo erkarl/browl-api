@@ -7,7 +7,7 @@ lint:
 
 test-python:
 	@echo "Running Python tests"
-	python manage.py test || exit 1
+	python manage.py test -v 2 || exit 1
 	@echo ""
 
 initdb:
