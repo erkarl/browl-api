@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'apps.posts',
     'apps.users',
+    'apps.tests',
     'rest_framework',
     'corsheaders',
     'south',
@@ -65,7 +66,7 @@ WSGI_APPLICATION = 'browl.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'browl',
         'USER': 'browl',
         'PASSWORD': 'browl',
