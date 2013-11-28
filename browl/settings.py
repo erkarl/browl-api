@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'apps.users',
     'rest_framework',
     'corsheaders',
-    'django_extensions',
     'south',
 )
 
