@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'apps.users',
     'rest_framework',
     'corsheaders',
+    'django_extensions',
     'south',
 )
 
@@ -74,6 +75,7 @@ DATABASES = {
     }
 }
 
+# Run tests using SQLite3 for better performance
 import sys
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES = {
@@ -121,3 +123,6 @@ if os.environ.get('BROWL_PRODUCTION'):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'staticfiles'
     STATIC_URL = '/static/'
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+    DEBUG = False
+    TEMPLATE_DEBUG = False
