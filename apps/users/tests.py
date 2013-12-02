@@ -36,3 +36,34 @@ class UserTest(APITestCase):
         self.client.force_authenticate(user=self.superuser)
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(self.superuser.username, response.content)
+        self.assertIn(self.user.username, response.content)
+
+    def test_get_users_detail(self):
+        """
+        Ensure that admin user can GET user-detail
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(self.superuser.username, response.content)
+        self.assertIn(self.superuser.first_name, response.content)
+        self.assertIn(self.superuser.last_name, response.content)
+
+    def test_get_users_detail_as_regular_user(self):
+        """
+        Ensure that regular user won't have access to GET user-detail
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_users_detail_unauthorized(self):
+        """
+        Ensure that regular user won't have access to GET user-detail
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
