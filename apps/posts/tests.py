@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from rest_framework.test import APITestCase, APIRequestFactory
 from django.contrib.auth.models import User
+from .models import Post
 from rest_framework import status
 
 
@@ -9,6 +10,8 @@ class UserTest(APITestCase):
     def setUp(self):
             self.superuser = User.objects.create_superuser('john', 'john@snow.com', 'snow')
             self.user = User.objects.create_user('tyrion', 'tyrion@lannister.com', 'lannister')
+            self.post = Post(title='Random Title', body='Random Body', user=self.superuser)
+            self.post.save()
             self.factory = APIRequestFactory()
 
     def test_get_post_list_logged_out(self):
@@ -74,3 +77,41 @@ class UserTest(APITestCase):
         body = 'Test Body'
         response = self.client.post(url, {'title': title, 'body': body, 'user': user_url}, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_update_unauthorized(self):
+        """
+        Ensure that logged out users cannot modify posts
+        """
+        url = reverse('post-detail', kwargs={'pk': self.post.id})
+        user_url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        title = 'Random New Title'
+        body = 'Random New Body'
+        response = self.client.put(url, {'title': title, 'body': body, 'user': user_url}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_update_regular_user(self):
+        """
+        Ensure that regular users cannot modify posts
+        """
+        url = reverse('post-detail', kwargs={'pk': self.post.id})
+        user_url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.user)
+        title = 'Random New Title'
+        body = 'Random New Body'
+        response = self.client.put(url, {'title': title, 'body': body, 'user': user_url}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_update_admin(self):
+        """
+        Ensure that superusers can modify posts
+        """
+        url = reverse('post-detail', kwargs={'pk': self.post.id})
+        user_url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.superuser)
+        title = 'Random New Title'
+        body = 'Random New Body'
+        response = self.client.put(url, {'title': title, 'body': body, 'user': user_url}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(title, response.content)
+        self.assertIn(body, response.content)
+        self.assertIn(user_url, response.content)
