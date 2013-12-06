@@ -67,3 +67,28 @@ class UserTest(APITestCase):
         url = reverse('user-detail', kwargs={'pk': self.superuser.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_users_unauthorized(self):
+        """
+        Ensure that logged out users cannot POST
+        """
+        url = reverse('user-list')
+        username = 'captobv'
+        first_name = 'Captain'
+        last_name = 'Obvious'
+        email = 'captain@obvious.com'
+        response = self.client.post(url, {'username': username, 'first_name': first_name, 'last_name': last_name, 'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_users_regular_user(self):
+        """
+        Ensure that regular users cannot POST
+        """
+        url = reverse('user-list')
+        self.client.force_authenticate(user=self.user)
+        username = 'captobv'
+        first_name = 'Captain'
+        last_name = 'Obvious'
+        email = 'captain@obvious.com'
+        response = self.client.post(url, {'username': username, 'first_name': first_name, 'last_name': last_name, 'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
