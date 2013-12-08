@@ -92,3 +92,20 @@ class UserTest(APITestCase):
         email = 'captain@obvious.com'
         response = self.client.post(url, {'username': username, 'first_name': first_name, 'last_name': last_name, 'email': email}, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_users_admin(self):
+        """
+        Ensure that admin users can POST
+        """
+        url = reverse('user-list')
+        self.client.force_authenticate(user=self.superuser)
+        username = 'captobv'
+        first_name = 'Captain'
+        last_name = 'Obvious'
+        email = 'captain@obvious.com'
+        response = self.client.post(url, {'username': username, 'first_name': first_name, 'last_name': last_name, 'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn(username, response.content)
+        self.assertIn(first_name, response.content)
+        self.assertIn(last_name, response.content)
+        self.assertIn(email, response.content)
