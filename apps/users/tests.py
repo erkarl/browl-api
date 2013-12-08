@@ -109,3 +109,33 @@ class UserTest(APITestCase):
         self.assertIn(first_name, response.content)
         self.assertIn(last_name, response.content)
         self.assertIn(email, response.content)
+
+    def test_patch_users_unauthorized(self):
+        """
+        Ensure that logged out users cannot PATCH users
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        email = 'new@email.com'
+        response = self.client.patch(url, {'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_patch_users_regular_user(self):
+        """
+        Ensure that regular users cannot PATCH users
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.user)
+        email = 'new@email.com'
+        response = self.client.patch(url, {'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_patch_users_admin(self):
+        """
+        Ensure that admin users can PATCH users
+        """
+        url = reverse('user-detail', kwargs={'pk': self.superuser.id})
+        self.client.force_authenticate(user=self.superuser)
+        email = 'new@email.com'
+        response = self.client.patch(url, {'email': email}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(email, response.content)
