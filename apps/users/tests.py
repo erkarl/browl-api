@@ -142,7 +142,7 @@ class UserTest(APITestCase):
 
     def test_users_options_unauthorized(self):
         """
-        Ensure that unauthorized users can OPTIONS users list
+        Ensure that unauthorized users cannot OPTIONS users list
         """
         url = reverse('user-list')
         response = self.client.options(url)
@@ -150,7 +150,7 @@ class UserTest(APITestCase):
 
     def test_users_options_logged_in(self):
         """
-        Ensure that logged in users can OPTIONS users list
+        Ensure that logged in users cannot OPTIONS users list
         """
         url = reverse('user-list')
         self.client.force_authenticate(user=self.user)
@@ -160,6 +160,33 @@ class UserTest(APITestCase):
     def test_users_options_admin(self):
         """
         Ensure that admin users can OPTIONS users list
+        """
+        url = reverse('user-list')
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.options(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('User List', response.content)
+
+    def test_users_head_unauthorized(self):
+        """
+        Ensure that unauthorized users cannot HEAD users list
+        """
+        url = reverse('user-list')
+        response = self.client.head(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_users_head_logged_in(self):
+        """
+        Ensure that logged in users cannot HEAD users list
+        """
+        url = reverse('user-list')
+        self.client.force_authenticate(user=self.user)
+        response = self.client.options(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_users_head_admin(self):
+        """
+        Ensure that admin users can HEAD users list
         """
         url = reverse('user-list')
         self.client.force_authenticate(user=self.superuser)
