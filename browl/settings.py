@@ -13,7 +13,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -116,6 +115,18 @@ if os.environ.get('BROWL_PRODUCTION'):
 
     # Allow all host headers
     ALLOWED_HOSTS = ['*']
+
+    # MemCached
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': 'mc3.dev.eu.ec2.memcachier.com:11211',
+            'OPTIONS': {
+                'username': os.environ.get('30017c'),
+                'password': os.environ.get('49cbac790c')
+            }
+        }
+    }
 
     # Static asset configuration
     import os
