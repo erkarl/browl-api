@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'provider',
     'provider.oauth2',
+    'gunicorn',
     'south',
 )
 
