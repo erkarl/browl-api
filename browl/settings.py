@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+ADMINS = (
+    ('Karl Ranna', 'karl@karlranna.com'),
+)
+
+MANAGERS = ADMINS
 
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -126,6 +131,30 @@ if os.environ.get('BROWL_PRODUCTION'):
                 'username': os.environ.get('30017c'),
                 'password': os.environ.get('49cbac790c')
             }
+        }
+    }
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'filters': {
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse'
+            }
+        },
+        'handlers': {
+            'mail_admins': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'django.utils.log.AdminEmailHandler'
+            }
+        },
+        'loggers': {
+            'django.request': {
+                'handlers': ['mail_admins'],
+                'level': 'ERROR',
+                'propagate': True,
+            },
         }
     }
 
