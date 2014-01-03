@@ -30,6 +30,21 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# E-MAIL settings
+if os.environ.get('BROWL_PRODUCTION'):
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME')
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD')
+    EMAIL_PORT = '25'
+    EMAIL_USE_TLS = True
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_HOST = 'mailhost.karlranna.com'
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
+    EMAIL_PORT = '25'
+    EMAIL_USE_TLS = True
 
 # Application definition
 
@@ -159,7 +174,6 @@ if os.environ.get('BROWL_PRODUCTION'):
     }
 
     # Static asset configuration
-    import os
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'staticfiles'
     STATIC_URL = '/static/'
