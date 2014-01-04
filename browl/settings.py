@@ -124,6 +124,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = "staticfiles"
 
+TEMPLATE_DIRS = (
+    'template',
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
+
 # Heroku Settings
 import os
 if os.environ.get('BROWL_PRODUCTION'):
