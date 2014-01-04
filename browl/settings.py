@@ -124,11 +124,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = "staticfiles"
 
+TEMPLATE_DIR = BASE_DIR + '/template'
 TEMPLATE_DIRS = (
-    'template',
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    TEMPLATE_DIR,
 )
 
 # Heroku Settings
@@ -181,7 +179,6 @@ if os.environ.get('BROWL_PRODUCTION'):
     }
 
     # Static asset configuration
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     STATIC_ROOT = 'staticfiles'
     STATIC_URL = '/static/'
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
