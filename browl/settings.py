@@ -7,9 +7,10 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+import sys
+import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 ADMINS = (
@@ -21,6 +22,7 @@ MANAGERS = ADMINS
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Production key set under Heroku config
 SECRET_KEY = '^#8nnl!4w=tv=h*@^8iq+u+v%y#*f^)_+6-#)ge08nitdnyzng'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -95,7 +97,6 @@ DATABASES = {
 }
 
 # Run tests using SQLite3 for better performance
-import sys
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES = {
         'default': {
@@ -124,6 +125,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + "/staticfiles"
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 TEMPLATE_DIR = BASE_DIR + '/template'
 TEMPLATE_DIRS = (
@@ -131,7 +135,6 @@ TEMPLATE_DIRS = (
 )
 
 # Heroku Settings
-import os
 if os.environ.get('BROWL_PRODUCTION'):
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
@@ -180,7 +183,7 @@ if os.environ.get('BROWL_PRODUCTION'):
     }
 
     # Static asset configuration
-    STATIC_ROOT = 'staticfiles'
+    STATIC_ROOT = BASE_DIR + "/staticfiles"
     STATIC_URL = '/static/'
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
     DEBUG = False
