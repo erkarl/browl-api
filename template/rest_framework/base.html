@@ -1,5 +1,6 @@
 {% load url from future %}
 {% load rest_framework %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,15 +11,15 @@
         <meta name="robots" content="NONE,NOARCHIVE" />
         {% endblock %}
 
-        <title>{% block title %}Django REST framework{% endblock %}</title>
+        <title>{% block title %}Browl-API{% endblock %}</title>
 
         {% block style %}
-        {% block bootstrap_theme %}
-            <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
-            <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>
-        {% endblock %}
-        <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
+          {% block bootstrap_theme %}
+              <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
+              <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>
+          {% endblock %}
+          <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
+          <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
         {% endblock %}
 
     {% endblock %}
@@ -33,7 +34,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <span href="/">
-                    {% block branding %}<a class='brand' href='http://django-rest-framework.org'>Django REST framework <span class="version">{{ version }}</span></a>{% endblock %}
+                    {% block branding %}<a class='brand' href='http://browl-api.karlranna.com'><img src="{% static 'logo.svg' %}" class="img-responsive" height="20" width="20">Browl-API</a>{% endblock %}
                 </span>
                 <ul class="nav pull-right">
                     {% block userlinks %}
@@ -69,8 +70,6 @@
 
     <!-- Content -->
     <div id="content">
-
-        test overwrite template DRF
 
         {% if 'GET' in allowed_methods %}
             <form id="get-form" class="pull-right">
