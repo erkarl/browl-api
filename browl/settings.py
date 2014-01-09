@@ -125,6 +125,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + "/staticfiles"
 
+# Media conf
+MEDIA_ROOT = BASE_DIR + '/media'
+MEDIA_URL = 'http://localhost:7000/media/'
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
@@ -185,6 +189,11 @@ if os.environ.get('BROWL_PRODUCTION'):
     # Static asset configuration
     STATIC_ROOT = BASE_DIR + "/staticfiles"
     STATIC_URL = '/static/'
+
+    # Media conf
+    MEDIA_ROOT = BASE_DIR + '/media'
+    MEDIA_URL = 'http://browl-api.karlranna.com/media/'
+
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
     DEBUG = False
     TEMPLATE_DEBUG = False
